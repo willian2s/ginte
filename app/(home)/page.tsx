@@ -1,11 +1,10 @@
 "use client";
 import React, { useState } from "react";
-import { Trash2, Check, Menu, Loader2 } from "lucide-react";
+import { Trash2, Check, Loader2 } from "lucide-react";
 import { useClients } from "@/src/hook/useClient";
 import { useDebounce } from "@/src/hook/useDebounce";
 import { toast } from "react-hot-toast";
 import { ContextMenu } from "@/src/components/ContextMenu";
-import { Sidebar } from "@/src/components/Sidebar";
 import { SearchBar } from "@/src/components/SearchBar";
 import { EmptyState } from "@/src/components/EmptyState";
 import { TableHeader } from "@/src/components/Table/TableHeader";
@@ -15,7 +14,6 @@ import { MobileTableRow } from "@/src/components/Table/MobileTableRow";
 import { DeleteConfirmationModal } from "@/src/components/DeleteConfirmModal";
 
 const Lista = () => {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [selectedRows, setSelectedRows] = useState<Set<number>>(new Set());
   const [currentPage, setCurrentPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState("");
@@ -152,158 +150,136 @@ const Lista = () => {
   }
 
   return (
-    <div className="flex min-h-screen">
-      {/* Mobile Menu Button */}
-      <button
-        onClick={() => setIsSidebarOpen(true)}
-        className="lg:hidden fixed top-4 left-4 z-20 p-2 bg-white rounded-lg shadow-lg"
-      >
-        <Menu className="w-6 h-6 text-zinc-800" />
-      </button>
+    <main className="flex-1">
+      <div className="p-4 lg:p-8 pt-16 lg:pt-8">
+        <h1 className="text-2xl lg:text-3xl font-semibold text-zinc-800 mb-4 lg:mb-8">
+          Clientes
+        </h1>
 
-      {/* Overlay */}
-      {isSidebarOpen && (
-        <div
-          className="fixed inset-0 bg-black bg-opacity-50 z-30 lg:hidden"
-          onClick={() => setIsSidebarOpen(false)}
-        />
-      )}
+        <div className="bg-zinc-900 rounded-lg border border-zinc-800">
+          <div className="p-4 lg:p-6 border-b border-zinc-800">
+            <div className="flex flex-col lg:flex-row gap-4 lg:gap-0 lg:justify-between lg:items-center">
+              <SearchBar
+                value={searchTerm}
+                onChange={handleSearch}
+                onClear={clearSearch}
+              />
 
-      <Sidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
+              <button
+                onClick={() =>
+                  handleDeleteClick("multiple", Array.from(selectedRows))
+                }
+                className={`flex items-center justify-center gap-2.5 bg-red-600 text-white font-semibold px-4 py-2 rounded-lg hover:bg-red-700 transition-colors whitespace-nowrap ${
+                  selectedRows.size === 0 ? "opacity-50 cursor-not-allowed" : ""
+                }`}
+                disabled={selectedRows.size === 0}
+              >
+                <span>Excluir Selecionados</span>
+                <Trash2 className="w-5 h-5" />
+              </button>
+            </div>
+          </div>
 
-      <main className="flex-1">
-        <div className="p-4 lg:p-8 pt-16 lg:pt-8">
-          <h1 className="text-2xl lg:text-3xl font-semibold text-zinc-800 mb-4 lg:mb-8">
-            Clientes
-          </h1>
+          {isLoading ? (
+            <div className="flex items-center justify-center p-8">
+              <Loader2 className="w-8 h-8 text-white animate-spin" />
+            </div>
+          ) : clients.length === 0 ? (
+            <EmptyState searchTerm={searchTerm} onClearSearch={clearSearch} />
+          ) : (
+            <>
+              {/* Versão Mobile */}
+              <div className="lg:hidden">
+                <div className="sticky top-0 flex items-center gap-3 px-4 py-3 bg-with-900 border-b border-zinc-800">
+                  <div
+                    onClick={toggleAllRows}
+                    className={`w-4 h-4 rounded cursor-pointer flex items-center justify-center ${
+                      selectedRows.size === clients.length
+                        ? "bg-neutral-50"
+                        : "border border-zinc-50"
+                    }`}
+                  >
+                    {selectedRows.size === clients.length && (
+                      <Check className="w-3.5 h-3.5 text-zinc-900" />
+                    )}
+                  </div>
+                  <span className="text-sm text-zinc-400 font-medium">
+                    {selectedRows.size} de {clients.length} selecionados
+                  </span>
+                </div>
 
-          <div className="bg-zinc-900 rounded-lg border border-zinc-800">
-            <div className="p-4 lg:p-6 border-b border-zinc-800">
-              <div className="flex flex-col lg:flex-row gap-4 lg:gap-0 lg:justify-between lg:items-center">
-                <SearchBar
-                  value={searchTerm}
-                  onChange={handleSearch}
-                  onClear={clearSearch}
+                {clients.map((client) => (
+                  <MobileTableRow
+                    key={client.id}
+                    client={client}
+                    index={client.id}
+                    isSelected={selectedRows.has(client.id)}
+                    onToggle={toggleRow}
+                  />
+                ))}
+              </div>
+
+              {/* Versão Desktop */}
+              <div className="hidden lg:block">
+                <TableHeader
+                  onSelectAll={toggleAllRows}
+                  isAllSelected={selectedRows.size === clients.length}
                 />
 
-                <button
-                  onClick={() =>
-                    handleDeleteClick("multiple", Array.from(selectedRows))
-                  }
-                  className={`flex items-center justify-center gap-2.5 bg-red-600 text-white font-semibold px-4 py-2 rounded-lg hover:bg-red-700 transition-colors whitespace-nowrap ${
-                    selectedRows.size === 0
-                      ? "opacity-50 cursor-not-allowed"
-                      : ""
-                  }`}
-                  disabled={selectedRows.size === 0}
-                >
-                  <span>Excluir Selecionados</span>
-                  <Trash2 className="w-5 h-5" />
-                </button>
-              </div>
-            </div>
-
-            {isLoading ? (
-              <div className="flex items-center justify-center p-8">
-                <Loader2 className="w-8 h-8 text-white animate-spin" />
-              </div>
-            ) : clients.length === 0 ? (
-              <EmptyState searchTerm={searchTerm} onClearSearch={clearSearch} />
-            ) : (
-              <>
-                {/* Versão Mobile */}
-                <div className="lg:hidden">
-                  <div className="sticky top-0 flex items-center gap-3 px-4 py-3 bg-with-900 border-b border-zinc-800">
-                    <div
-                      onClick={toggleAllRows}
-                      className={`w-4 h-4 rounded cursor-pointer flex items-center justify-center ${
-                        selectedRows.size === clients.length
-                          ? "bg-neutral-50"
-                          : "border border-zinc-50"
-                      }`}
-                    >
-                      {selectedRows.size === clients.length && (
-                        <Check className="w-3.5 h-3.5 text-zinc-900" />
-                      )}
-                    </div>
-                    <span className="text-sm text-zinc-400 font-medium">
-                      {selectedRows.size} de {clients.length} selecionados
-                    </span>
-                  </div>
-
-                  {clients.map((client) => (
-                    <MobileTableRow
-                      key={client.id}
-                      client={client}
-                      index={client.id}
-                      isSelected={selectedRows.has(client.id)}
-                      onToggle={toggleRow}
-                    />
-                  ))}
-                </div>
-
-                {/* Versão Desktop */}
-                <div className="hidden lg:block">
-                  <TableHeader
-                    onSelectAll={toggleAllRows}
-                    isAllSelected={selectedRows.size === clients.length}
-                  />
-
-                  <div className="w-full overflow-x-auto">
-                    <div style={{ minWidth: "1200px" }}>
-                      {clients.map((client) => (
-                        <TableRow
-                          key={client.id}
-                          client={client}
-                          isSelected={selectedRows.has(client.id)}
-                          onToggle={toggleRow}
-                          onContextMenu={handleContextMenu}
-                        />
-                      ))}
-                    </div>
+                <div className="w-full overflow-x-auto">
+                  <div style={{ minWidth: "1200px" }}>
+                    {clients.map((client) => (
+                      <TableRow
+                        key={client.id}
+                        client={client}
+                        isSelected={selectedRows.has(client.id)}
+                        onToggle={toggleRow}
+                        onContextMenu={handleContextMenu}
+                      />
+                    ))}
                   </div>
                 </div>
-              </>
-            )}
+              </div>
+            </>
+          )}
 
-            {pagination && clients.length > 0 && (
-              <Pagination
-                currentPage={pagination.currentPage}
-                lastPage={pagination.lastPage}
-                hasNext={!!pagination.next}
-                hasPrev={!!pagination.prev}
-                onPageChange={setCurrentPage}
-                selectedCount={selectedRows.size}
-                totalItems={clients.length}
-              />
-            )}
-          </div>
+          {pagination && clients.length > 0 && (
+            <Pagination
+              currentPage={pagination.currentPage}
+              lastPage={pagination.lastPage}
+              hasNext={!!pagination.next}
+              hasPrev={!!pagination.prev}
+              onPageChange={setCurrentPage}
+              selectedCount={selectedRows.size}
+              totalItems={clients.length}
+            />
+          )}
         </div>
+      </div>
 
-        <ContextMenu
-          isOpen={contextMenu.isOpen}
-          onClose={() => setContextMenu((prev) => ({ ...prev, isOpen: false }))}
-          position={contextMenu.position}
-          onEdit={() => {
-            if (contextMenu.clientId) {
-              handleEditClient(contextMenu.clientId);
-            }
-          }}
-          onDelete={() => {
-            if (contextMenu.clientId) {
-              handleDeleteClick("single", [contextMenu.clientId]);
-            }
-          }}
-        />
-        {/* Modal de Confirmação */}
-        <DeleteConfirmationModal
-          isOpen={isDeleteModalOpen}
-          onClose={() => setIsDeleteModalOpen(false)}
-          onConfirm={handleConfirmDelete}
-          selectedCount={itemToDelete?.ids.length ?? 0}
-        />
-      </main>
-    </div>
+      <ContextMenu
+        isOpen={contextMenu.isOpen}
+        onClose={() => setContextMenu((prev) => ({ ...prev, isOpen: false }))}
+        position={contextMenu.position}
+        onEdit={() => {
+          if (contextMenu.clientId) {
+            handleEditClient(contextMenu.clientId);
+          }
+        }}
+        onDelete={() => {
+          if (contextMenu.clientId) {
+            handleDeleteClick("single", [contextMenu.clientId]);
+          }
+        }}
+      />
+      {/* Modal de Confirmação */}
+      <DeleteConfirmationModal
+        isOpen={isDeleteModalOpen}
+        onClose={() => setIsDeleteModalOpen(false)}
+        onConfirm={handleConfirmDelete}
+        selectedCount={itemToDelete?.ids.length ?? 0}
+      />
+    </main>
   );
 };
 
