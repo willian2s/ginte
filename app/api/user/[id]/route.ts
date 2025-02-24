@@ -1,4 +1,4 @@
-import { ErrorHandler } from "@/src/common/utils/error-handle";
+import { ErrorHandler } from "@/src/utils/error-handle";
 import { User } from "@/src/repositories";
 import { FindOne } from "@/src/repositories/user";
 import { NextRequest, NextResponse } from "next/server";
@@ -44,25 +44,6 @@ export async function PUT(
     );
 
     return NextResponse.json(user);
-  } catch (error) {
-    const { message, statusCode } = ErrorHandler(error);
-
-    return NextResponse.json({ error: message }, { status: statusCode });
-  }
-}
-
-export async function DELETE(
-  req: NextRequest,
-  { params }: { params: Promise<FindOne> }
-) {
-  try {
-    const { id } = await params;
-
-    await User.Delete({
-      id,
-    });
-
-    return NextResponse.json({ message: "Usuário deletado com sucesso" });
   } catch (error) {
     const { message, statusCode } = ErrorHandler(error);
 

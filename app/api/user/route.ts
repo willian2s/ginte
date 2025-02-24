@@ -1,36 +1,40 @@
-import { ErrorHandler } from "@/src/common/utils/error-handle";
+import { ErrorHandler } from "@/src/utils/error-handle";
 import { User } from "@/src/repositories";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: NextRequest) {
   try {
     const searchParams = req.nextUrl.searchParams;
-    const name = searchParams.get("name");
-    const email = searchParams.get("email");
+    const search = searchParams.get("search");
+    const page = Number(searchParams.get("page"));
+    const limit = Number(searchParams.get("limit"));
 
     let where = {};
 
-    if (name) {
+    if (search) {
       where = {
         ...where,
-        name: {
-          contains: name,
-          mode: "insensitive",
-        },
+        OR: [
+          {
+            name: {
+              contains: search,
+              mode: "insensitive", // Case insensitive
+            },
+          },
+          {
+            email: {
+              contains: search,
+              mode: "insensitive", // Case insensitive
+            },
+          },
+        ],
       };
     }
 
-    if (email) {
-      where = {
-        ...where,
-        email: {
-          contains: email,
-          mode: "insensitive",
-        },
-      };
-    }
-
-    const users = await User.FindMany(where);
+    const users = await User.FindMany(where, {
+      page,
+      limit,
+    });
 
     return NextResponse.json(users);
   } catch (error) {
@@ -80,6 +84,22 @@ export async function POST(req: NextRequest) {
     const user = await User.Create(data);
 
     return NextResponse.json(user);
+  } catch (error) {
+    const { message, statusCode } = ErrorHandler(error);
+
+    return NextResponse.json({ error: message }, { status: statusCode });
+  }
+}
+
+export async function DELETE(req: NextRequest) {
+  try {
+    const data = await req.json();
+
+    await User.Delete({
+      id: data,
+    });
+
+    return NextResponse.json({ message: "Usuário deletado com sucesso" });
   } catch (error) {
     const { message, statusCode } = ErrorHandler(error);
 

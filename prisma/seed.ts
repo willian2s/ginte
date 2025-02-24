@@ -1,4 +1,6 @@
-import { Prisma, database } from ".";
+import { Prisma, PrismaClient } from "@prisma/client";
+
+const prisma = new PrismaClient();
 
 const users: Prisma.UserCreateInput[] = [
   {
@@ -111,7 +113,7 @@ const users: Prisma.UserCreateInput[] = [
 export async function main() {
   for (const [index, user] of users.entries()) {
     console.log(`Creating user ${index + 1} of ${users.length}`);
-    await database.user.create({
+    await prisma.user.create({
       data: user,
     });
   }

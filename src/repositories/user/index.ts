@@ -9,6 +9,10 @@ export interface FindOne {
   id: string;
 }
 
+export interface DeleteMany {
+  id: string[];
+}
+
 export interface CreateUser {
   name: string;
   email: string;
@@ -17,12 +21,39 @@ export interface CreateUser {
   birthDate: Date;
 }
 
-export const FindMany = async (where: FindMay) => {
-  const user = await prisma.user.findMany({
+interface Pagination {
+  page: number;
+  limit: number;
+}
+
+export const FindMany = async (where: FindMay, pagination: Pagination) => {
+  const page = pagination.page || 1;
+  const limit = pagination.limit || 10;
+
+  const skip = page > 0 ? limit * (page - 1) : 0;
+  const total = await prisma.user.count({
     where,
   });
 
-  return user;
+  const users = await prisma.user.findMany({
+    where,
+    take: limit,
+    skip,
+  });
+
+  const lastPage = Math.ceil(total / limit);
+
+  return {
+    data: users,
+    meta: {
+      total,
+      lastPage,
+      currentPage: page,
+      limit,
+      prev: page > 1 ? page - 1 : null,
+      next: page < lastPage ? page + 1 : null,
+    },
+  };
 };
 
 export const FindOne = async (where: FindOne) => {
@@ -42,9 +73,13 @@ export const Update = async (where: FindOne, data: Partial<CreateUser>) => {
   return user;
 };
 
-export const Delete = async (where: FindOne) => {
-  await prisma.user.delete({
-    where,
+export const Delete = async (where: DeleteMany) => {
+  await prisma.user.deleteMany({
+    where: {
+      id: {
+        in: where.id,
+      },
+    },
   });
 };
 

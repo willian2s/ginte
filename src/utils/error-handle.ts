@@ -80,7 +80,6 @@ export function ErrorHandler(error: unknown): {
   message: string;
   statusCode: number;
 } {
-  console.log(error);
   if (
     error instanceof Prisma.PrismaClientKnownRequestError ||
     error instanceof Prisma.PrismaClientUnknownRequestError
