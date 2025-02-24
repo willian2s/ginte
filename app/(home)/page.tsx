@@ -12,6 +12,7 @@ import { TableHeader } from "@/src/components/Table/TableHeader";
 import { TableRow } from "@/src/components/Table/TableRow";
 import { Pagination } from "@/src/components/Pagination";
 import { MobileTableRow } from "@/src/components/Table/MobileTableRow";
+import { DeleteConfirmationModal } from "@/src/components/DeleteConfirmModal";
 
 const Lista = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -56,17 +57,17 @@ const Lista = () => {
     }
   };
 
-  const handleDeleteSelected = async () => {
-    try {
-      const selectedIds = Array.from(selectedRows);
-      await deleteClients(selectedIds);
-      setSelectedRows(new Set());
-      toast.success("Clientes excluídos com sucesso!");
-    } catch (error) {
-      console.log(error);
-      toast.error("Erro ao excluir clientes");
-    }
-  };
+  // const handleDeleteSelected = async () => {
+  //   try {
+  //     const selectedIds = Array.from(selectedRows);
+  //     await deleteClients(selectedIds);
+  //     setSelectedRows(new Set());
+  //     toast.success("Clientes excluídos com sucesso!");
+  //   } catch (error) {
+  //     console.log(error);
+  //     toast.error("Erro ao excluir clientes");
+  //   }
+  // };
 
   const [contextMenu, setContextMenu] = useState<{
     isOpen: boolean;
@@ -104,13 +105,31 @@ const Lista = () => {
     // Implementar lógica de edição
   };
 
-  const handleDeleteClient = async (clientId: number) => {
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [itemToDelete, setItemToDelete] = useState<{
+    type: "single" | "multiple";
+    ids: number[];
+  } | null>(null);
+
+  const handleDeleteClick = (type: "single" | "multiple", ids: number[]) => {
+    setItemToDelete({ type, ids });
+    setIsDeleteModalOpen(true);
+  };
+
+  const handleConfirmDelete = async () => {
+    if (!itemToDelete) return;
+
     try {
-      await deleteClients([clientId]);
-      toast.success("Cliente excluído com sucesso!");
+      await deleteClients(itemToDelete.ids);
+      toast.success(
+        itemToDelete.type === "multiple"
+          ? "Clientes excluídos com sucesso!"
+          : "Cliente excluído com sucesso!"
+      );
+      setSelectedRows(new Set());
     } catch (error) {
       console.log(error);
-      toast.error("Erro ao excluir cliente");
+      toast.error("Erro ao excluir cliente(s)");
     }
   };
 
@@ -168,7 +187,9 @@ const Lista = () => {
                 />
 
                 <button
-                  onClick={handleDeleteSelected}
+                  onClick={() =>
+                    handleDeleteClick("multiple", Array.from(selectedRows))
+                  }
                   className={`flex items-center justify-center gap-2.5 bg-red-600 text-white font-semibold px-4 py-2 rounded-lg hover:bg-red-700 transition-colors whitespace-nowrap ${
                     selectedRows.size === 0
                       ? "opacity-50 cursor-not-allowed"
@@ -192,7 +213,7 @@ const Lista = () => {
               <>
                 {/* Versão Mobile */}
                 <div className="lg:hidden">
-                  <div className="sticky top-0 z-10 flex items-center gap-3 px-4 py-3 bg-zinc-900 border-b border-zinc-800">
+                  <div className="sticky top-0 flex items-center gap-3 px-4 py-3 bg-with-900 border-b border-zinc-800">
                     <div
                       onClick={toggleAllRows}
                       className={`w-4 h-4 rounded cursor-pointer flex items-center justify-center ${
@@ -270,9 +291,16 @@ const Lista = () => {
           }}
           onDelete={() => {
             if (contextMenu.clientId) {
-              handleDeleteClient(contextMenu.clientId);
+              handleDeleteClick("single", [contextMenu.clientId]);
             }
           }}
+        />
+        {/* Modal de Confirmação */}
+        <DeleteConfirmationModal
+          isOpen={isDeleteModalOpen}
+          onClose={() => setIsDeleteModalOpen(false)}
+          onConfirm={handleConfirmDelete}
+          selectedCount={itemToDelete?.ids.length ?? 0}
         />
       </main>
     </div>
