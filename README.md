@@ -1,36 +1,125 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# GinTe CRUD
 
-## Getting Started
+Este projeto é parte do teste para a GinTe em **React** com **Tailwind CSS**.
 
-First, run the development server:
+## 🚀 Tecnologias Utilizadas
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+- **React** (com Next.js)
+- **Tailwind CSS**
+- **Lucide React** (para ícones)
+- **Prisma ORM** (para gerenciamento do banco de dados)
+- **Docker** (para ambiente de banco de dados)
+
+## 📦 Pré-requisitos
+
+Antes de começar, certifique-se de ter as seguintes ferramentas instaladas em sua máquina:
+
+- [Node.js](https://nodejs.org/) (versão 18+ recomendada)
+- [npm](https://www.npmjs.com/) ou [yarn](https://yarnpkg.com/)
+- [Docker](https://www.docker.com/) (para rodar o banco de dados)
+
+## 📥 Instalação
+
+1. **Clone o repositório:**
+
+   ```sh
+   git clone https://github.com/willian2s/ginte.git
+   ```
+
+2. **Acesse a pasta do projeto:**
+
+   ```sh
+   cd ginte
+   ```
+
+3. **Instale as dependências:**
+
+   ```sh
+   npm install
+   ```
+   Ou, se estiver utilizando **Yarn**:
+   ```sh
+   yarn install
+   ```
+
+## 🏃‍♂️ Executando o Projeto
+
+### Iniciar o ambiente de desenvolvimento
+
+1. **Suba os containers do Docker:**
+   ```sh
+   npm run compose:up
+   ```
+
+2. **Execute as migrações do banco de dados:**
+   ```sh
+   npx prisma migrate dev
+   ```
+
+3. **Gere os modelos do Prisma:**
+   ```sh
+   npm run db:generate
+   ```
+
+4. **Popule o banco de dados com dados iniciais (se necessário):**
+   ```sh
+   npm run db:seed
+   ```
+
+5. **Inicie o servidor de desenvolvimento:**
+   ```sh
+   npm run dev
+   ```
+
+O projeto estará disponível em `http://localhost:3000`.
+
+## 🛠 Estrutura do Projeto
+
+```
+/src
+  ├── app
+  │   ├── (home)
+  │   │   ├── page.tsx  # Página principal
+  ├── components
+  │   ├── Modal.tsx  # Componente de Modal
+  │   ├── DeleteConfirmationModal.tsx  # Modal de exclusão
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🎨 Personalização
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Se precisar ajustar estilos, edite os arquivos em `src/components` e utilize as classes do **Tailwind CSS** conforme necessário.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 🐞 Debugging
 
-## Learn More
+Caso encontre algum problema, siga estas verificações:
 
-To learn more about Next.js, take a look at the following resources:
+- **Dependências instaladas corretamente?**
+  ```sh
+  ls node_modules
+  ```
+  Se estiver vazio, reinstale:
+  ```sh
+  npm install
+  ```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- **O banco de dados está rodando corretamente?**
+  ```sh
+  docker ps
+  ```
+  Se o container do banco não estiver rodando, reinicie:
+  ```sh
+  npm run compose:up
+  ```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- **Erros no console?**
+  - Verifique o console do navegador para mensagens de erro.
+  - Cheque os logs do servidor no terminal.
 
-## Deploy on Vercel
+## 📄 Licença
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Este projeto está sob a licença **MIT**. Sinta-se à vontade para usá-lo e modificá-lo conforme necessário.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+---
+
+📧 Para dúvidas ou sugestões, entre em contato!
+
