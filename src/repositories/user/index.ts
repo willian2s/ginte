@@ -1,4 +1,4 @@
-import { database } from "@/prisma";
+import prisma from "@/prisma";
 
 interface FindMay {
   name?: string;
@@ -18,7 +18,7 @@ export interface CreateUser {
 }
 
 export const FindMany = async (where: FindMay) => {
-  const user = await database.user.findMany({
+  const user = await prisma.user.findMany({
     where,
   });
 
@@ -26,7 +26,7 @@ export const FindMany = async (where: FindMay) => {
 };
 
 export const FindOne = async (where: FindOne) => {
-  const user = await database.user.findFirst({
+  const user = await prisma.user.findFirst({
     where,
   });
 
@@ -34,7 +34,7 @@ export const FindOne = async (where: FindOne) => {
 };
 
 export const Update = async (where: FindOne, data: Partial<CreateUser>) => {
-  const user = await database.user.update({
+  const user = await prisma.user.update({
     where,
     data,
   });
@@ -43,13 +43,13 @@ export const Update = async (where: FindOne, data: Partial<CreateUser>) => {
 };
 
 export const Delete = async (where: FindOne) => {
-  await database.user.delete({
+  await prisma.user.delete({
     where,
   });
 };
 
 export const Create = async (data: CreateUser) => {
-  const user = await database.user.create({
+  const user = await prisma.user.create({
     data,
   });
 
