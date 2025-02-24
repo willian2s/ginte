@@ -11,13 +11,13 @@ const fetcher = async (url: string) => {
 
 export function useClients(page: number, limit: number, search: string) {
   const { data, error, isLoading, mutate } = useSWR<ApiResponse<Client>>(
-    `/api/user?page=${page}&limit=${limit}&search=${search}`,
+    `/api/customer?page=${page}&limit=${limit}&search=${search}`,
     fetcher
   );
 
   const deleteClients = async (ids: number[]) => {
     try {
-      await fetch("/api/user", {
+      await fetch("/api/customer", {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
@@ -28,7 +28,7 @@ export function useClients(page: number, limit: number, search: string) {
       // Revalidate the data
       mutate();
     } catch (error) {
-      console.error("Error deleting clients:", error);
+      console.error("Error deleting customers:", error);
       throw error;
     }
   };
