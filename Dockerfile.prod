@@ -1,0 +1,26 @@
+# Usa a versão correta do Node.js
+FROM node:22-alpine AS base
+
+# Define o diretório de trabalho
+WORKDIR /app
+
+# Copia apenas arquivos essenciais primeiro
+COPY package.json package-lock.json ./
+
+# Instala as dependências
+RUN npm install
+
+# Copia o restante dos arquivos para dentro do container
+COPY . .
+
+# Gera o Prisma Client
+RUN npx prisma generate
+
+# **Executa o build do Next.js**
+RUN npm run build
+
+# Expõe a porta da aplicação
+EXPOSE 3000
+
+# Inicia o servidor Next.js em produção
+CMD ["npm", "run", "start"]

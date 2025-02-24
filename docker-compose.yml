@@ -1,0 +1,46 @@
+services:
+  # Serviço para ambiente de desenvolvimento
+  nextjs_dev:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    container_name: nextjs_dev
+    ports:
+      - "3000:3000"
+    environment:
+      - DATABASE_URL=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}
+    volumes:
+      - .:/app
+      - /app/node_modules  # Evita sobrescrever node_modules dentro do container
+    depends_on:
+      - postgres
+    command: npm run dev  # Inicia o Next.js em modo dev
+
+  # Serviço para ambiente de produção
+  nextjs_prod:
+    build:
+      context: .
+      dockerfile: Dockerfile.prod
+    container_name: nextjs_prod
+    ports:
+      - "3000:3000"
+    environment:
+      - DATABASE_URL=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}
+    depends_on:
+      - postgres
+    command: npm run start  # Inicia o Next.js em modo produção
+
+  postgres:
+    image: postgres:alpine
+    container_name: postgres_db
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}  # Usando a variável POSTGRES_USER do arquivo .env
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}  # Usando a variável POSTGRES_PASSWORD do arquivo .env
+      POSTGRES_DB: ${POSTGRES_DB}  # Usando a variável POSTGRES_DB do arquivo .env
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
