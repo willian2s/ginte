@@ -31,11 +31,11 @@ export const FindMany = async (where: FindMay, pagination: Pagination) => {
   const limit = pagination.limit || 10;
 
   const skip = page > 0 ? limit * (page - 1) : 0;
-  const total = await prisma.user.count({
+  const total = await prisma.customer.count({
     where,
   });
 
-  const users = await prisma.user.findMany({
+  const users = await prisma.customer.findMany({
     where,
     take: limit,
     skip,
@@ -57,7 +57,7 @@ export const FindMany = async (where: FindMay, pagination: Pagination) => {
 };
 
 export const FindOne = async (where: FindOne) => {
-  const user = await prisma.user.findFirst({
+  const user = await prisma.customer.findFirst({
     where,
   });
 
@@ -65,7 +65,7 @@ export const FindOne = async (where: FindOne) => {
 };
 
 export const Update = async (where: FindOne, data: Partial<CreateUser>) => {
-  const user = await prisma.user.update({
+  const user = await prisma.customer.update({
     where,
     data,
   });
@@ -74,7 +74,7 @@ export const Update = async (where: FindOne, data: Partial<CreateUser>) => {
 };
 
 export const Delete = async (where: DeleteMany) => {
-  await prisma.user.deleteMany({
+  await prisma.customer.deleteMany({
     where: {
       id: {
         in: where.id,
@@ -84,7 +84,7 @@ export const Delete = async (where: DeleteMany) => {
 };
 
 export const Create = async (data: CreateUser) => {
-  const user = await prisma.user.create({
+  const user = await prisma.customer.create({
     data,
   });
 

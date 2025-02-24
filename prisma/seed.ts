@@ -2,7 +2,7 @@ import { Prisma, PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
-const users: Prisma.UserCreateInput[] = [
+const users: Prisma.CustomerCreateInput[] = [
   {
     email: "john.doe@example.com",
     name: "John Doe",
@@ -112,8 +112,8 @@ const users: Prisma.UserCreateInput[] = [
 
 export async function main() {
   for (const [index, user] of users.entries()) {
-    console.log(`Creating user ${index + 1} of ${users.length}`);
-    await prisma.user.create({
+    console.log(`Creating customer ${index + 1} of ${users.length}`);
+    await prisma.customer.create({
       data: user,
     });
   }

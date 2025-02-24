@@ -7,8 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "compose:up:prod": "docker-compose up -d --build nextjs_prod",
-    "compose:up:dev": "docker-compose up -d --build nextjs_dev",
+    "compose:up": "docker-compose up -d",
     "compose:down": "docker-compose down"
   },
   "dependencies": {

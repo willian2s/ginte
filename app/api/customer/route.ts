@@ -1,5 +1,5 @@
 import { ErrorHandler } from "@/src/utils/error-handle";
-import { User } from "@/src/repositories";
+import { Customer } from "@/src/repositories";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: NextRequest) {
@@ -31,12 +31,12 @@ export async function GET(req: NextRequest) {
       };
     }
 
-    const users = await User.FindMany(where, {
+    const customers = await Customer.FindMany(where, {
       page,
       limit,
     });
 
-    return NextResponse.json(users);
+    return NextResponse.json(customers);
   } catch (error) {
     const { message, statusCode } = ErrorHandler(error);
 
@@ -81,9 +81,9 @@ export async function POST(req: NextRequest) {
       });
     }
 
-    const user = await User.Create(data);
+    const customer = await Customer.Create(data);
 
-    return NextResponse.json(user);
+    return NextResponse.json(customer);
   } catch (error) {
     const { message, statusCode } = ErrorHandler(error);
 
@@ -95,11 +95,11 @@ export async function DELETE(req: NextRequest) {
   try {
     const data = await req.json();
 
-    await User.Delete({
+    await Customer.Delete({
       id: data,
     });
 
-    return NextResponse.json({ message: "Usuário deletado com sucesso" });
+    return NextResponse.json({ message: "Cliente deletado com sucesso" });
   } catch (error) {
     const { message, statusCode } = ErrorHandler(error);
 

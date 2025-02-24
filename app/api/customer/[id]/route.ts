@@ -1,6 +1,6 @@
 import { ErrorHandler } from "@/src/utils/error-handle";
-import { User } from "@/src/repositories";
-import { FindOne } from "@/src/repositories/user";
+import { Customer } from "@/src/repositories";
+import { FindOne } from "@/src/repositories/customer";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(
@@ -10,17 +10,17 @@ export async function GET(
   try {
     const { id } = await params;
 
-    const user = await User.FindOne({
+    const customer = await Customer.FindOne({
       id,
     });
 
-    if (!user) {
-      throw new Error("Usuário não encontrado", {
+    if (!customer) {
+      throw new Error("Cliente não encontrado", {
         cause: "NotFound",
       });
     }
 
-    return NextResponse.json(user);
+    return NextResponse.json(customer);
   } catch (error) {
     const { message, statusCode } = ErrorHandler(error);
 
@@ -36,14 +36,14 @@ export async function PUT(
     const body = await req.json();
     const { id } = await params;
 
-    const user = await User.Update(
+    const customer = await Customer.Update(
       {
         id,
       },
       body
     );
 
-    return NextResponse.json(user);
+    return NextResponse.json(customer);
   } catch (error) {
     const { message, statusCode } = ErrorHandler(error);
 
