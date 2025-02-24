@@ -31,10 +31,16 @@ export async function GET(req: NextRequest) {
       };
     }
 
-    const customers = await Customer.FindMany(where, {
-      page,
-      limit,
-    });
+    const customers = await Customer.FindMany(
+      where,
+      {
+        page,
+        limit,
+      },
+      {
+        createdAt: "desc",
+      }
+    );
 
     return NextResponse.json(customers);
   } catch (error) {

@@ -26,7 +26,15 @@ interface Pagination {
   limit: number;
 }
 
-export const FindMany = async (where: FindMay, pagination: Pagination) => {
+interface OrderBy {
+  createdAt: "asc" | "desc";
+}
+
+export const FindMany = async (
+  where: FindMay,
+  pagination: Pagination,
+  orderBy: OrderBy
+) => {
   const page = pagination.page || 1;
   const limit = pagination.limit || 10;
 
@@ -39,6 +47,7 @@ export const FindMany = async (where: FindMay, pagination: Pagination) => {
     where,
     take: limit,
     skip,
+    orderBy,
   });
 
   const lastPage = Math.ceil(total / limit);

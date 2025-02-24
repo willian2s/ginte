@@ -12,8 +12,10 @@ import { TableRow } from "@/src/components/Table/TableRow";
 import { Pagination } from "@/src/components/Pagination";
 import { MobileTableRow } from "@/src/components/Table/MobileTableRow";
 import { DeleteConfirmationModal } from "@/src/components/DeleteConfirmModal";
+import { useRouter } from "next/navigation";
 
 const Lista = () => {
+  const router = useRouter();
   const [selectedRows, setSelectedRows] = useState<Set<number>>(new Set());
   const [currentPage, setCurrentPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState("");
@@ -99,8 +101,7 @@ const Lista = () => {
   };
 
   const handleEditClient = (clientId: number) => {
-    console.log("Editar cliente:", clientId);
-    // Implementar lógica de edição
+    router.push(`/customer/${clientId}`);
   };
 
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);

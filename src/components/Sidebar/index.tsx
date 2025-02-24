@@ -2,7 +2,9 @@
 import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Users, UserPlus, LogOut, Building2, Menu, X } from "lucide-react";
+import { Users, UserPlus, LogOut, Menu, X } from "lucide-react";
+import Logo from "../../assets/images/Logo.svg";
+import Image from "next/image";
 
 interface SidebarProps {
   isMobile?: boolean;
@@ -76,7 +78,13 @@ export const Sidebar = ({ isMobile = false }: SidebarProps) => {
 
         <div className="px-4 py-8 flex flex-col items-center h-full">
           {/* Logo */}
-          <Building2 className="w-[50px] h-[50px] text-zinc-800" />
+          <Image
+            src={Logo}
+            alt="Logo"
+            width={50}
+            height={50}
+            className="text-zinc-800"
+          />
 
           {/* Navigation */}
           <div className="mt-12 w-full space-y-3">
