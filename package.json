@@ -10,7 +10,8 @@
     "compose:up": "docker-compose up -d",
     "compose:down": "docker-compose down",
     "db:generate": "prisma generate",
-    "db:seed": "prisma db seed"
+    "db:seed": "prisma db seed",
+    "postinstall": "prisma generate"
   },
   "dependencies": {
     "@hookform/resolvers": "^4.1.2",
