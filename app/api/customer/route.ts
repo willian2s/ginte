@@ -1,9 +1,15 @@
 import { ErrorHandler } from "@/src/utils/error-handle";
 import { Customer } from "@/src/repositories";
 import { NextRequest, NextResponse } from "next/server";
+import { verifyAuth } from "@/src/utils/auth";
 
 export async function GET(req: NextRequest) {
   try {
+    const user = await verifyAuth();
+    if (!user) {
+      return NextResponse.json({ error: "Não autorizado" }, { status: 401 });
+    }
+
     const searchParams = req.nextUrl.searchParams;
     const search = searchParams.get("search");
     const page = Number(searchParams.get("page"));
@@ -52,6 +58,11 @@ export async function GET(req: NextRequest) {
 
 export async function POST(req: NextRequest) {
   try {
+    const user = await verifyAuth();
+    if (!user) {
+      return NextResponse.json({ error: "Não autorizado" }, { status: 401 });
+    }
+
     const data = await req.json();
 
     if (!data) {
@@ -99,6 +110,11 @@ export async function POST(req: NextRequest) {
 
 export async function DELETE(req: NextRequest) {
   try {
+    const user = await verifyAuth();
+    if (!user) {
+      return NextResponse.json({ error: "Não autorizado" }, { status: 401 });
+    }
+
     const data = await req.json();
 
     await Customer.Delete({
