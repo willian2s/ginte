@@ -4,7 +4,7 @@ import type { NextRequest } from "next/server";
 // Este arquivo deve estar na raiz do projeto (mesmo nível que package.json)
 export function middleware(request: NextRequest) {
   // Verificar se existe um token de autenticação
-  const token = request.cookies.get("auth_token")?.value;
+  const token = request.headers.get("cookie")?.includes("auth_token");
 
   // Verificar se a rota atual é uma página de autenticação
   const isAuthPage = request.nextUrl.pathname === "/login";
