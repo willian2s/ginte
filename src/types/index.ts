@@ -12,6 +12,7 @@ export interface MobileTableRowProps {
   index: number;
   isSelected: boolean;
   onToggle: (index: number) => void;
+  onDelete: () => void;
 }
 
 export interface ApiResponse<T> {

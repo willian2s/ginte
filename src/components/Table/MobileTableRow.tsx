@@ -2,14 +2,21 @@
 import { MobileTableRowProps } from "@/src/types";
 import { Check, ChevronRight } from "lucide-react";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 export const MobileTableRow: React.FC<MobileTableRowProps> = ({
   client,
   index,
   isSelected,
   onToggle,
+  onDelete,
 }) => {
   const [isExpanded, setIsExpanded] = useState(false);
+  const router = useRouter();
+
+  const handleEditClick = () => {
+    router.push(`/customer/${client.id}`);
+  };
 
   return (
     <div className="border-b border-zinc-800">
@@ -57,6 +64,21 @@ export const MobileTableRow: React.FC<MobileTableRowProps> = ({
           <div className="flex justify-between">
             <span className="text-zinc-400">Endereço</span>
             <span className="text-white">{client.address}</span>
+          </div>
+
+          <div className="flex justify-end">
+            <button
+              onClick={onDelete}
+              className="bg-red-600 text-white p-2 rounded mx-2"
+            >
+              Excluir
+            </button>
+            <button
+              onClick={handleEditClick}
+              className="bg-zinc-600 text-white p-2 rounded"
+            >
+              Editar
+            </button>
           </div>
         </div>
       )}

@@ -57,18 +57,6 @@ const Lista = () => {
     }
   };
 
-  // const handleDeleteSelected = async () => {
-  //   try {
-  //     const selectedIds = Array.from(selectedRows);
-  //     await deleteClients(selectedIds);
-  //     setSelectedRows(new Set());
-  //     toast.success("Clientes excluídos com sucesso!");
-  //   } catch (error) {
-  //     console.log(error);
-  //     toast.error("Erro ao excluir clientes");
-  //   }
-  // };
-
   const [contextMenu, setContextMenu] = useState<{
     isOpen: boolean;
     position: { x: number; y: number };
@@ -216,6 +204,7 @@ const Lista = () => {
                     index={client.id}
                     isSelected={selectedRows.has(client.id)}
                     onToggle={toggleRow}
+                    onDelete={() => handleDeleteClick("single", [client.id])}
                   />
                 ))}
               </div>
