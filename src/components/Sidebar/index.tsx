@@ -2,7 +2,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Users, UserPlus, LogOut, Menu, X } from "lucide-react";
+import { Users, UserPlus, Menu, X } from "lucide-react";
 import Logo from "../../assets/images/Logo.svg";
 import Image from "next/image";
 
@@ -108,12 +108,6 @@ export const Sidebar = ({ isMobile = false }: SidebarProps) => {
               </Link>
             ))}
           </div>
-
-          {/* Logout */}
-          <button className="mt-auto w-full flex items-center gap-2 px-3 py-2 rounded-lg text-zinc-800 font-semibold hover:bg-zinc-100">
-            <LogOut className="w-6 h-6" />
-            <span>Sair</span>
-          </button>
         </div>
       </aside>
     </>
