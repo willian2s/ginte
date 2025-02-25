@@ -58,6 +58,7 @@ export async function POST(request: NextRequest) {
       path: "/",
       secure: process.env.NODE_ENV === "production",
       maxAge: 60 * 60 * 24 * 7, // 7 dias
+      domain: process.env.NEXT_PUBLIC_DOMAIN || undefined,
     });
 
     const { password: _, ...userWithoutPassword } = user;
