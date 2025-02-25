@@ -10,7 +10,7 @@ Este projeto é parte do teste para a GinTe em **React** com **Tailwind CSS**.
 - **Prisma ORM** (para gerenciamento do banco de dados)
 - **Docker** (para ambiente de banco de dados)
 
-## 📦 Pré-requisitos
+## 📛 Pré-requisitos
 
 Antes de começar, certifique-se de ter as seguintes ferramentas instaladas em sua máquina:
 
@@ -73,17 +73,39 @@ Antes de começar, certifique-se de ter as seguintes ferramentas instaladas em s
 
 O projeto estará disponível em `http://localhost:3000`.
 
-## 🛠 Estrutura do Projeto
+## 🛠 Roteiro de Testes
 
-```
-/src
-  ├── app
-  │   ├── (home)
-  │   │   ├── page.tsx  # Página principal
-  ├── components
-  │   ├── Modal.tsx  # Componente de Modal
-  │   ├── DeleteConfirmationModal.tsx  # Modal de exclusão
-```
+### 1. Criar uma Conta
+1. Acesse `http://localhost:3000/register`.
+2. Preencha os campos com nome, e-mail e senha.
+3. Clique no botão **"Cadastrar"**.
+4. Verifique se o sistema redireciona para a tela de login e exibe uma mensagem de sucesso.
+
+### 2. Login
+1. Acesse `http://localhost:3000/login`.
+2. Insira o e-mail e a senha cadastrados.
+3. Clique no botão **"Entrar"**.
+4. Verifique se o sistema redireciona para a dashboard.
+
+### 3. Criar um Cliente
+1. Acesse `http://localhost:3000/customer`.
+2. Preencha os dados do cliente.
+3. Clique em **"Salvar"**.
+4. Confirme se o cliente aparece na listagem.
+
+### 4. Editar um Cliente
+1. Na lista de clientes, clique em **"Editar"** em um cliente existente.
+2. Modifique os dados e clique em **"Salvar"**.
+3. Confirme se as alterações foram salvas corretamente.
+
+### 5. Excluir um Cliente
+1. Na lista de clientes, clique em **"Excluir"**.
+2. Confirme a exclusão.
+3. Verifique se o cliente foi removido da listagem.
+
+### 6. Logout
+1. Clique no botão **"Sair"** no menu lateral.
+2. Verifique se o sistema redireciona para a tela de login.
 
 ## 🎨 Personalização
 
@@ -115,7 +137,7 @@ Caso encontre algum problema, siga estas verificações:
   - Verifique o console do navegador para mensagens de erro.
   - Cheque os logs do servidor no terminal.
 
-## 📄 Licença
+## 📝 Licença
 
 Este projeto está sob a licença **MIT**. Sinta-se à vontade para usá-lo e modificá-lo conforme necessário.
 
