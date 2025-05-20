@@ -1,6 +1,6 @@
 # GinTe CRUD
 
-Este projeto é parte do teste para a GinTe em **React** com **Tailwind CSS**.
+Este projeto é parte do teste para a GinTe em **React** com **Tailwind CSS**
 
 ## 🚀 Tecnologias Utilizadas
 
