@@ -144,4 +144,3 @@ Este projeto está sob a licença **MIT**. Sinta-se à vontade para usá-lo e mo
 ---
 
 📧 Para dúvidas ou sugestões, entre em contato!
-
